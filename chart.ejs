@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div>
+        <canvas id="myChart1"></canvas>
+    </div>
+    <div>
+        <canvas id="myChart2"></canvas>
+    </div>
+    <div>
+        <canvas id="myChart3"></canvas>
+    </div>
+    <div>
+        <canvas id="myChart4"></canvas>
+    </div>
+
+    <script>
+        const xlabels1 = [];
+        const ylabels1 = [];
+        const ylabels2 = [];
+        const ylabels3 = [];
+        const ylabels4 = [];
+
+        getData();
+        chartIt(xlabels1, ylabels1, 'myChart1')
+        chartIt(xlabels1, ylabels2, 'myChart2')
+        chartIt(xlabels1, ylabels3, 'myChart3')
+        chartIt(xlabels1, ylabels4, 'myChart4')
+
+
+        function chartIt(x, y, str) {
+
+            const ctx = document.getElementById(str).getContext('2d');
+
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: x,
+                    datasets: [{
+                        label: 'My Stock Data',
+                        data: y,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+
+        async function getData() {
+           
+            const response = await fetch('/sheet.csv');
+            const data = await response.text();
+
+            const table = data.split('\n').slice(1);
+            table.forEach(row => {
+                const columns = row.split(',')
+                const close = columns[1]
+                const high = columns[3]
+                const low = columns[4]
+                const open = columns[2]
+                const date = columns[0]
+                xlabels1.push(date)
+                ylabels1.push(parseFloat(close))
+                ylabels2.push(parseFloat(high))
+                ylabels3.push(parseFloat(low))
+                ylabels4.push(parseFloat(open))
+
+            })
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="/app.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>OHLC</title>
+</head>
+
+<body>
+    <h1>Stock Market Dashboard</h1>
+
+    
+</datalist>
+    <div style="align-content: center;margin: 5rem;">
+        <div class="container">
+            <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    
+                    </div>
+            </div>
+            <div class="col">
+                <label for="customRange2" class="form-label" style="font-size: 1.5rem;">Select Range of Date</label>
+                <input type="range" class="form-range" min="0" max="5" id="customRange2">
+            </div>
+            <div class="col">
+              3 of 3
+            </div>
+          </div>  </div>
+    
+    
+    
+    <hr>
+    <table class="table table-light table-striped my-table" id="table">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Date</th>
+                <th>Uopen</th>
+                <th>UHigh</th>
+                <th>ULow</th>
+                <th>FClose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stockdata.forEach(function(item){ %>
+                <tr>
+                    <td>
+                        <%= item.symbol %>
+                    </td>
+                    <td>
+                        <%= item.date %>
+                    </td>
+                    <td>
+                        <%= item.uOpen %>
+                    </td>
+                    <td>
+                        <%= item.uHigh %>
+                    </td>
+                    <td>
+                        <%= item.uLow %>
+                    </td>
+                    <td>
+                        <%= item.fClose %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+
+
+   
+
+
+
+
+    <div class="container">
+        <div class="row row-cols-2">
+          <div class="col"> <div>
+            <canvas id="myChart"></canvas>
+        </div></div>
+          <div class="col">Column</div>
+          <div class="col">Column</div>
+          <div class="col">Column</div>
+        </div>
+      </div>
+</div>
+
+    <canvas id="myChart" width="10rem" height="10rem"></canvas>
+    <script>
+        var ctx = document.getElementById('myChart');
+
+        const table_data = './stocklist1.json';
+
+        async function getISS() {
+            const response = await fetch(table_data)
+            const data = await response.json();
+        }
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="/app.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js" type="text/javascript"></script>
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-stock.min.js" type="text/javascript"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-data-adapter.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js" type="text/javascript"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-stock.min.js" type="text/javascript"></script>
+    <title>OHLC</title>
+</head>
+
+<body>
+   
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><i class="fas fa-bars"></i></label>
+    <div class="wrapper">
+      <ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Services</a></li>
+<li><a href="#">Gallery</a></li>
+<li><a href="#">Feedback</a></li>
+</ul>
+</div>
+     
+
+
+    <h1>Stock Market Dashboard</h1>
+
+    
+</datalist>
+  
+    
+    
+   <hr style="width: 40%; margin-left: 30%;">
+    <h2 style="text-align: center;"> Stock Analysis for Amazon</h2>
+    <table class="table table-light table-striped my-table " id="table">
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data1.forEach(function(item){ %>
+                <tr>
+                   
+                    <td>
+                        <%= item.date %>
+                    </td>
+                    <td>
+                        <%= item.open %>
+                    </td>
+                    <td>
+                        <%= item.high %>
+                    </td>
+                    <td>
+                        <%= item.low %>
+                    </td>
+                    <td>
+                        <%= item.close %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+
+  
+    <canvas id="line_chart"></canvas>
+    <canvas id="bar_chart"></canvas>
+    <div id="chartdiv"></div>
+          
+      
+</div>
+    <div id="container1" class="candle"></div>
+     <canvas id="line_chart" width="10rem" height="10rem"></canvas>
+     <script>
+        var ctx = document.getElementById('line_chart');
+        var ctx1 = document.getElementById('bar_chart');
+
+        const table_data = './stocklist1.json';
+
+        async function getISS() {
+            const response = await fetch(table_data)
+            const data = await response.json();
+        }
+      
+        var line_chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June','July','Aug','Sept'],
+                datasets: [{
+                    label: 'Percent Change',
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    data: [-0.0374,0.0022,0.0188,-0.0007,-0.0053,0.0115,0.0046,-0.0006],
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var bar_chart = new Chart(ctx1,  {
+        type: 'bar',
+        data: {
+                labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June','July','Aug'],
+                datasets: [{
+                    label: 'Percent Change',
+                    data: [-0.0374,0.0022,0.0188,-0.0007,-0.0053,0.0115,0.0046,-0.0006],
+                    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(201, 203, 207, 0.2)'
+    ]
+                }]
+            },
+        options: {
+         scales: {
+         y: {
+              beginAtZero: true
+             }
+          }
+         }
+        });
+
+
+    </script>
+
+
+<!-- Candlestick code -->
+<script>
+    anychart.data.loadCsvFile("/sheet.csv", function (data) {
+  
+  var dataTable = anychart.data.table(0, 'dd-MM-yyyy');
+  dataTable.addData(data);
+  var mapping = dataTable.mapAs({ 'open': 2, 'high': 3, 'low': 4, 'close': 1 });
+  var chart = anychart.stock();
+
+// set the series
+var series = chart.plot(0).candlestick(mapping);
+series.name("Candlestick Chart");
+
+// set the chart title
+chart.title("EUR USD Historical Trade Data");
+
+// set the container id
+chart.container('container1');
+
+// draw the chart
+chart.draw();
+
+
+});
+
+</script>
+
+
+
+
+<!-- OHLC code -->
+<script>
+    am4core.ready(function() {
+    
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+    chart.paddingRight = 20;
+    
+    chart.dateFormatter.inputDateFormat = "YYYY-MM-dd";
+    
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.grid.template.location = 0;
+    
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.tooltip.disabled = true;
+    
+    var series = chart.series.push(new am4charts.OHLCSeries());
+    series.dataFields.dateX = "date";
+    series.dataFields.valueY = "close";
+    series.dataFields.openValueY = "open";
+    series.dataFields.lowValueY = "low";
+    series.dataFields.highValueY = "high";
+    series.tooltipText = "Open:${openValueY.value}\nLow:${lowValueY.value}\nHigh:${highValueY.value}\nClose:${valueY.value}";
+    series.strokeWidth = 2;
+    
+    chart.cursor = new am4charts.XYCursor();
+    
+    // a separate series for scrollbar
+    var lineSeries = chart.series.push(new am4charts.LineSeries());
+    lineSeries.dataFields.dateX = "date";
+    lineSeries.dataFields.valueY = "close";
+    // need to set on default state, as initially series is "show"
+    lineSeries.defaultState.properties.visible = false;
+    
+    // hide from legend too (in case there is one)
+    lineSeries.hiddenInLegend = true;
+    lineSeries.fillOpacity = 0.5;
+    lineSeries.strokeOpacity = 0.5;
+    
+    var scrollbarX = new am4charts.XYChartScrollbar();
+    scrollbarX.series.push(lineSeries);
+    chart.scrollbarX = scrollbarX;
+    
+    chart.data = [
+  {
+    "date": "04-01-2021",
+    "close": 129.41,
+    "high": 133.6116,
+    "low": 126.76,
+    "open": 133.52
+  },
+  {
+    "date": "05-01-2021",
+    "close": 131.01,
+    "high": 131.74,
+    "low": 128.43,
+    "open": 128.89
+  },
+  {
+    "date": "06-01-2021",
+    "close": 126.6,
+    "high": 131.0499,
+    "low": 126.382,
+    "open": 127.72
+  },
+  {
+    "date": "07-01-2021",
+    "close": 130.92,
+    "high": 131.63,
+    "low": 127.86,
+    "open": 128.36
+  },
+  {
+    "date": "08-01-2021",
+    "close": 132.05,
+    "high": 132.63,
+    "low": 130.23,
+    "open": 132.43
+  },
+  {
+    "date": "11-01-2021",
+    "close": 128.98,
+    "high": 130.17,
+    "low": 128.5,
+    "open": 129.19
+  },
+  {
+    "date": "12-01-2021",
+    "close": 128.8,
+    "high": 129.69,
+    "low": 126.86,
+    "open": 128.5
+  },
+  {
+    "date": "13-01-2021",
+    "close": 130.89,
+    "high": 131.45,
+    "low": 128.49,
+    "open": 128.76
+  },
+  {
+    "date": "14-01-2021",
+    "close": 128.91,
+    "high": 131,
+    "low": 128.76,
+    "open": 130.8
+  },
+  {
+    "date": "15-01-2021",
+    "close": 127.14,
+    "high": 130.2242,
+    "low": 127,
+    "open": 128.78
+  },
+  {
+    "date": "19-01-2021",
+    "close": 127.83,
+    "high": 128.71,
+    "low": 126.938,
+    "open": 127.78
+  },
+  {
+    "date": "20-01-2021",
+    "close": 132.03,
+    "high": 132.49,
+    "low": 128.55,
+    "open": 128.66
+  },
+  {
+    "date": "21-01-2021",
+    "close": 136.87,
+    "high": 139.67,
+    "low": 133.59,
+    "open": 133.8
+  },
+  {
+    "date": "22-01-2021",
+    "close": 139.07,
+    "high": 139.85,
+    "low": 135.02,
+    "open": 136.28
+  },
+  {
+    "date": "25-01-2021",
+    "close": 142.92,
+    "high": 145.09,
+    "low": 136.54,
+    "open": 143.07
+  },
+  {
+    "date": "26-01-2021",
+    "close": 143.16,
+    "high": 144.3,
+    "low": 141.37,
+    "open": 143.6
+  },
+  {
+    "date": "27-01-2021",
+    "close": 142.06,
+    "high": 144.3,
+    "low": 140.41,
+    "open": 143.43
+  },
+  {
+    "date": "28-01-2021",
+    "close": 137.09,
+    "high": 141.99,
+    "low": 136.7,
+    "open": 139.52
+  },
+  {
+    "date": "29-01-2021",
+    "close": 131.96,
+    "high": 136.74,
+    "low": 130.21,
+    "open": 135.83
+  },
+  {
+    "date": "01-02-2021",
+    "close": 134.14,
+    "high": 135.38,
+    "low": 130.93,
+    "open": 133.75
+  },
+  {
+    "date": "02-02-2021",
+    "close": 134.99,
+    "high": 136.31,
+    "low": 134.61,
+    "open": 135.73
+  },
+  {
+    "date": "03-02-2021",
+    "close": 133.94,
+    "high": 135.77,
+    "low": 133.61,
+    "open": 135.76
+  },
+  {
+    "date": "04-02-2021",
+    "close": 137.39,
+    "high": 137.4,
+    "low": 134.59,
+    "open": 136.3
+  },
+  {
+    "date": "05-02-2021",
+    "close": 136.76,
+    "high": 137.42,
+    "low": 135.86,
+    "open": 137.35
+  },
+  {
+    "date": "08-02-2021",
+    "close": 136.91,
+    "high": 136.96,
+    "low": 134.92,
+    "open": 136.03
+  },
+  {
+    "date": "09-02-2021",
+    "close": 136.01,
+    "high": 137.877,
+    "low": 135.85,
+    "open": 136.62
+  },
+  {
+    "date": "10-02-2021",
+    "close": 135.39,
+    "high": 136.99,
+    "low": 134.4,
+    "open": 136.48
+  },
+  {
+    "date": "11-02-2021",
+    "close": 135.13,
+    "high": 136.39,
+    "low": 133.77,
+    "open": 135.9
+  },
+  {
+    "date": "12-02-2021",
+    "close": 135.37,
+    "high": 135.53,
+    "low": 133.6921,
+    "open": 134.35
+  },
+  {
+    "date": "16-02-2021",
+    "close": 133.19,
+    "high": 136.01,
+    "low": 132.79,
+    "open": 135.49
+  },
+  {
+    "date": "17-02-2021",
+    "close": 130.84,
+    "high": 132.22,
+    "low": 129.47,
+    "open": 131.25
+  },
+  {
+    "date": "18-02-2021",
+    "close": 129.71,
+    "high": 129.995,
+    "low": 127.41,
+    "open": 129.2
+  },
+  {
+    "date": "19-02-2021",
+    "close": 129.87,
+    "high": 130.71,
+    "low": 128.8,
+    "open": 130.24
+  },
+  {
+    "date": "22-02-2021",
+    "close": 126,
+    "high": 129.72,
+    "low": 125.6,
+    "open": 128.01
+  },
+  {
+    "date": "23-02-2021",
+    "close": 125.86,
+    "high": 126.71,
+    "low": 118.39,
+    "open": 123.76
+  },
+  {
+    "date": "24-02-2021",
+    "close": 125.35,
+    "high": 125.56,
+    "low": 122.23,
+    "open": 124.94
+  },
+  {
+    "date": "25-02-2021",
+    "close": 120.99,
+    "high": 126.4585,
+    "low": 120.54,
+    "open": 124.68
+  },
+  {
+    "date": "26-02-2021",
+    "close": 121.26,
+    "high": 124.85,
+    "low": 121.2,
+    "open": 122.59
+  },
+  {
+    "date": "01-03-2021",
+    "close": 127.79,
+    "high": 127.93,
+    "low": 122.79,
+    "open": 123.75
+  },
+  {
+    "date": "02-03-2021",
+    "close": 125.12,
+    "high": 128.72,
+    "low": 125.01,
+    "open": 128.41
+  },
+  {
+    "date": "03-03-2021",
+    "close": 122.06,
+    "high": 125.71,
+    "low": 121.84,
+    "open": 124.81
+  },
+  {
+    "date": "04-03-2021",
+    "close": 120.13,
+    "high": 123.6,
+    "low": 118.62,
+    "open": 121.75
+  },
+  {
+    "date": "05-03-2021",
+    "close": 121.42,
+    "high": 121.935,
+    "low": 117.57,
+    "open": 120.98
+  },
+  {
+    "date": "08-03-2021",
+    "close": 116.36,
+    "high": 121,
+    "low": 116.21,
+    "open": 120.93
+  },
+  {
+    "date": "09-03-2021",
+    "close": 121.085,
+    "high": 122.06,
+    "low": 118.79,
+    "open": 119.03
+  },
+  {
+    "date": "10-03-2021",
+    "close": 119.98,
+    "high": 122.17,
+    "low": 119.45,
+    "open": 121.69
+  },
+  {
+    "date": "11-03-2021",
+    "close": 121.96,
+    "high": 123.21,
+    "low": 121.26,
+    "open": 122.54
+  },
+  {
+    "date": "12-03-2021",
+    "close": 121.03,
+    "high": 121.17,
+    "low": 119.16,
+    "open": 120.4
+  },
+  {
+    "date": "15-03-2021",
+    "close": 123.99,
+    "high": 124,
+    "low": 120.42,
+    "open": 121.41
+  },
+  {
+    "date": "16-03-2021",
+    "close": 125.57,
+    "high": 127.22,
+    "low": 124.715,
+    "open": 125.7
+  },
+  {
+    "date": "17-03-2021",
+    "close": 124.76,
+    "high": 125.8599,
+    "low": 122.336,
+    "open": 124.05
+  },
+  {
+    "date": "18-03-2021",
+    "close": 120.53,
+    "high": 123.18,
+    "low": 120.32,
+    "open": 122.88
+  },
+  {
+    "date": "19-03-2021",
+    "close": 119.99,
+    "high": 121.43,
+    "low": 119.675,
+    "open": 119.9
+  },
+  {
+    "date": "22-03-2021",
+    "close": 123.39,
+    "high": 123.87,
+    "low": 120.26,
+    "open": 120.33
+  },
+  {
+    "date": "23-03-2021",
+    "close": 122.54,
+    "high": 124.24,
+    "low": 122.14,
+    "open": 123.33
+  },
+  {
+    "date": "24-03-2021",
+    "close": 120.09,
+    "high": 122.9,
+    "low": 120.065,
+    "open": 122.82
+  },
+  {
+    "date": "25-03-2021",
+    "close": 120.59,
+    "high": 121.66,
+    "low": 119,
+    "open": 119.54
+  },
+  {
+    "date": "26-03-2021",
+    "close": 121.21,
+    "high": 121.48,
+    "low": 118.92,
+    "open": 120.35
+  },
+  {
+    "date": "29-03-2021",
+    "close": 121.39,
+    "high": 122.58,
+    "low": 120.7299,
+    "open": 121.65
+  },
+  {
+    "date": "30-03-2021",
+    "close": 119.9,
+    "high": 120.4031,
+    "low": 118.86,
+    "open": 120.11
+  },
+  {
+    "date": "31-03-2021",
+    "close": 122.15,
+    "high": 123.52,
+    "low": 121.15,
+    "open": 121.65
+  },
+  {
+    "date": "01-04-2021",
+    "close": 123,
+    "high": 124.18,
+    "low": 122.49,
+    "open": 123.66
+  },
+  {
+    "date": "05-04-2021",
+    "close": 125.9,
+    "high": 126.1601,
+    "low": 123.07,
+    "open": 123.87
+  },
+  {
+    "date": "06-04-2021",
+    "close": 126.21,
+    "high": 127.13,
+    "low": 125.65,
+    "open": 126.5
+  },
+  {
+    "date": "07-04-2021",
+    "close": 127.9,
+    "high": 127.92,
+    "low": 125.14,
+    "open": 125.83
+  },
+  {
+    "date": "08-04-2021",
+    "close": 130.36,
+    "high": 130.39,
+    "low": 128.52,
+    "open": 128.95
+  },
+  {
+    "date": "09-04-2021",
+    "close": 132.995,
+    "high": 133.04,
+    "low": 129.47,
+    "open": 129.8
+  },
+  {
+    "date": "12-04-2021",
+    "close": 131.24,
+    "high": 132.85,
+    "low": 130.63,
+    "open": 132.52
+  },
+  {
+    "date": "13-04-2021",
+    "close": 134.43,
+    "high": 134.66,
+    "low": 131.93,
+    "open": 132.44
+  },
+  {
+    "date": "14-04-2021",
+    "close": 132.03,
+    "high": 135,
+    "low": 131.655,
+    "open": 134.94
+  },
+  {
+    "date": "15-04-2021",
+    "close": 134.5,
+    "high": 135,
+    "low": 133.64,
+    "open": 133.82
+  },
+  {
+    "date": "16-04-2021",
+    "close": 134.16,
+    "high": 134.67,
+    "low": 133.28,
+    "open": 134.3
+  },
+  {
+    "date": "19-04-2021",
+    "close": 134.84,
+    "high": 135.47,
+    "low": 133.34,
+    "open": 133.51
+  },
+  {
+    "date": "20-04-2021",
+    "close": 133.11,
+    "high": 135.53,
+    "low": 131.81,
+    "open": 135.02
+  },
+  {
+    "date": "21-04-2021",
+    "close": 133.5,
+    "high": 133.75,
+    "low": 131.3001,
+    "open": 132.36
+  },
+  {
+    "date": "22-04-2021",
+    "close": 131.94,
+    "high": 134.15,
+    "low": 131.41,
+    "open": 133.04
+  },
+  {
+    "date": "23-04-2021",
+    "close": 134.32,
+    "high": 135.12,
+    "low": 132.16,
+    "open": 132.16
+  },
+  {
+    "date": "26-04-2021",
+    "close": 134.72,
+    "high": 135.06,
+    "low": 133.56,
+    "open": 134.83
+  },
+  {
+    "date": "27-04-2021",
+    "close": 134.39,
+    "high": 135.41,
+    "low": 134.11,
+    "open": 135.01
+  },
+  {
+    "date": "28-04-2021",
+    "close": 133.58,
+    "high": 135.02,
+    "low": 133.08,
+    "open": 134.31
+  },
+  {
+    "date": "29-04-2021",
+    "close": 133.48,
+    "high": 137.07,
+    "low": 132.45,
+    "open": 136.47
+  },
+  {
+    "date": "30-04-2021",
+    "close": 131.46,
+    "high": 133.56,
+    "low": 131.065,
+    "open": 131.78
+  },
+  {
+    "date": "03-05-2021",
+    "close": 132.54,
+    "high": 134.07,
+    "low": 131.83,
+    "open": 132.04
+  },
+  {
+    "date": "04-05-2021",
+    "close": 127.85,
+    "high": 131.4899,
+    "low": 126.7,
+    "open": 131.19
+  },
+  {
+    "date": "05-05-2021",
+    "close": 128.1,
+    "high": 130.45,
+    "low": 127.97,
+    "open": 129.2
+  },
+  {
+    "date": "06-05-2021",
+    "close": 129.74,
+    "high": 129.75,
+    "low": 127.13,
+    "open": 127.89
+  },
+  {
+    "date": "07-05-2021",
+    "close": 130.21,
+    "high": 131.2582,
+    "low": 129.475,
+    "open": 130.85
+  },
+  {
+    "date": "10-05-2021",
+    "close": 126.85,
+    "high": 129.54,
+    "low": 126.81,
+    "open": 129.41
+  },
+  {
+    "date": "11-05-2021",
+    "close": 125.91,
+    "high": 126.27,
+    "low": 122.77,
+    "open": 123.5
+  },
+  {
+    "date": "12-05-2021",
+    "close": 122.77,
+    "high": 124.64,
+    "low": 122.25,
+    "open": 123.4
+  },
+  {
+    "date": "13-05-2021",
+    "close": 124.97,
+    "high": 126.15,
+    "low": 124.26,
+    "open": 124.58
+  },
+  {
+    "date": "14-05-2021",
+    "close": 127.45,
+    "high": 127.89,
+    "low": 125.85,
+    "open": 126.25
+  },
+  {
+    "date": "17-05-2021",
+    "close": 126.27,
+    "high": 126.93,
+    "low": 125.17,
+    "open": 126.82
+  },
+  {
+    "date": "18-05-2021",
+    "close": 124.85,
+    "high": 126.99,
+    "low": 124.78,
+    "open": 126.56
+  },
+  {
+    "date": "19-05-2021",
+    "close": 124.69,
+    "high": 124.915,
+    "low": 122.86,
+    "open": 123.16
+  },
+  {
+    "date": "20-05-2021",
+    "close": 127.31,
+    "high": 127.72,
+    "low": 125.1,
+    "open": 125.23
+  },
+  {
+    "date": "21-05-2021",
+    "close": 125.43,
+    "high": 128,
+    "low": 125.21,
+    "open": 127.82
+  },
+  {
+    "date": "24-05-2021",
+    "close": 127.1,
+    "high": 127.94,
+    "low": 125.94,
+    "open": 126.01
+  },
+  {
+    "date": "25-05-2021",
+    "close": 126.9,
+    "high": 128.32,
+    "low": 126.32,
+    "open": 127.82
+  },
+  {
+    "date": "26-05-2021",
+    "close": 126.85,
+    "high": 127.39,
+    "low": 126.42,
+    "open": 126.955
+  },
+  {
+    "date": "27-05-2021",
+    "close": 125.28,
+    "high": 127.64,
+    "low": 125.08,
+    "open": 126.44
+  },
+  {
+    "date": "28-05-2021",
+    "close": 124.61,
+    "high": 125.8,
+    "low": 124.55,
+    "open": 125.57
+  },
+  {
+    "date": "01-06-2021",
+    "close": 124.28,
+    "high": 125.35,
+    "low": 123.94,
+    "open": 125.08
+  },
+  {
+    "date": "02-06-2021",
+    "close": 125.06,
+    "high": 125.24,
+    "low": 124.05,
+    "open": 124.28
+  },
+  {
+    "date": "03-06-2021",
+    "close": 123.54,
+    "high": 124.85,
+    "low": 123.13,
+    "open": 124.68
+  },
+  {
+    "date": "04-06-2021",
+    "close": 125.89,
+    "high": 126.16,
+    "low": 123.85,
+    "open": 124.07
+  },
+  {
+    "date": "07-06-2021",
+    "close": 125.9,
+    "high": 126.32,
+    "low": 124.8321,
+    "open": 126.17
+  },
+  {
+    "date": "08-06-2021",
+    "close": 126.74,
+    "high": 128.46,
+    "low": 126.2101,
+    "open": 126.6
+  },
+  {
+    "date": "09-06-2021",
+    "close": 127.13,
+    "high": 127.75,
+    "low": 126.52,
+    "open": 127.21
+  },
+  {
+    "date": "10-06-2021",
+    "close": 126.11,
+    "high": 128.19,
+    "low": 125.94,
+    "open": 127.02
+  },
+  {
+    "date": "11-06-2021",
+    "close": 127.35,
+    "high": 127.44,
+    "low": 126.1,
+    "open": 126.53
+  },
+  {
+    "date": "14-06-2021",
+    "close": 130.48,
+    "high": 130.54,
+    "low": 127.07,
+    "open": 127.82
+  },
+  {
+    "date": "15-06-2021",
+    "close": 129.64,
+    "high": 130.6,
+    "low": 129.39,
+    "open": 129.94
+  },
+  {
+    "date": "16-06-2021",
+    "close": 130.15,
+    "high": 130.89,
+    "low": 128.461,
+    "open": 130.37
+  },
+  {
+    "date": "17-06-2021",
+    "close": 131.79,
+    "high": 132.55,
+    "low": 129.65,
+    "open": 129.8
+  },
+  {
+    "date": "18-06-2021",
+    "close": 130.46,
+    "high": 131.51,
+    "low": 130.24,
+    "open": 130.71
+  },
+  {
+    "date": "21-06-2021",
+    "close": 132.3,
+    "high": 132.41,
+    "low": 129.21,
+    "open": 130.3
+  },
+  {
+    "date": "22-06-2021",
+    "close": 133.98,
+    "high": 134.08,
+    "low": 131.62,
+    "open": 132.13
+  },
+  {
+    "date": "23-06-2021",
+    "close": 133.7,
+    "high": 134.32,
+    "low": 133.23,
+    "open": 133.77
+  },
+  {
+    "date": "24-06-2021",
+    "close": 133.41,
+    "high": 134.64,
+    "low": 132.93,
+    "open": 134.45
+  },
+  {
+    "date": "25-06-2021",
+    "close": 133.11,
+    "high": 133.89,
+    "low": 132.81,
+    "open": 133.46
+  },
+  {
+    "date": "28-06-2021",
+    "close": 134.78,
+    "high": 135.245,
+    "low": 133.35,
+    "open": 133.41
+  },
+  {
+    "date": "29-06-2021",
+    "close": 136.33,
+    "high": 136.49,
+    "low": 134.35,
+    "open": 134.8
+  },
+  {
+    "date": "30-06-2021",
+    "close": 136.96,
+    "high": 137.41,
+    "low": 135.87,
+    "open": 136.17
+  },
+  {
+    "date": "01-07-2021",
+    "close": 137.27,
+    "high": 137.33,
+    "low": 135.76,
+    "open": 136.6
+  },
+  {
+    "date": "02-07-2021",
+    "close": 139.96,
+    "high": 140,
+    "low": 137.745,
+    "open": 137.9
+  },
+  {
+    "date": "06-07-2021",
+    "close": 142.02,
+    "high": 143.15,
+    "low": 140.07,
+    "open": 140.07
+  },
+  {
+    "date": "07-07-2021",
+    "close": 144.57,
+    "high": 144.89,
+    "low": 142.66,
+    "open": 143.535
+  },
+  {
+    "date": "08-07-2021",
+    "close": 143.24,
+    "high": 144.06,
+    "low": 140.665,
+    "open": 141.58
+  },
+  {
+    "date": "09-07-2021",
+    "close": 145.11,
+    "high": 145.65,
+    "low": 142.6522,
+    "open": 142.75
+  },
+  {
+    "date": "12-07-2021",
+    "close": 144.5,
+    "high": 146.32,
+    "low": 144,
+    "open": 146.21
+  },
+  {
+    "date": "13-07-2021",
+    "close": 145.64,
+    "high": 147.46,
+    "low": 143.63,
+    "open": 144.03
+  },
+  {
+    "date": "14-07-2021",
+    "close": 149.15,
+    "high": 149.57,
+    "low": 147.68,
+    "open": 148.1
+  },
+  {
+    "date": "15-07-2021",
+    "close": 148.48,
+    "high": 150,
+    "low": 147.09,
+    "open": 149.24
+  },
+  {
+    "date": "16-07-2021",
+    "close": 146.39,
+    "high": 149.76,
+    "low": 145.88,
+    "open": 148.46
+  },
+  {
+    "date": "19-07-2021",
+    "close": 142.45,
+    "high": 144.07,
+    "low": 141.67,
+    "open": 143.75
+  },
+  {
+    "date": "20-07-2021",
+    "close": 146.15,
+    "high": 147.0997,
+    "low": 142.96,
+    "open": 143.46
+  },
+  {
+    "date": "21-07-2021",
+    "close": 145.4,
+    "high": 146.13,
+    "low": 144.63,
+    "open": 145.53
+  },
+  {
+    "date": "22-07-2021",
+    "close": 146.8,
+    "high": 148.195,
+    "low": 145.81,
+    "open": 145.935
+  },
+  {
+    "date": "23-07-2021",
+    "close": 148.56,
+    "high": 148.7177,
+    "low": 146.92,
+    "open": 147.55
+  },
+  {
+    "date": "26-07-2021",
+    "close": 148.99,
+    "high": 149.83,
+    "low": 147.7,
+    "open": 148.27
+  },
+  {
+    "date": "27-07-2021",
+    "close": 146.77,
+    "high": 149.21,
+    "low": 145.55,
+    "open": 149.12
+  },
+  {
+    "date": "28-07-2021",
+    "close": 144.98,
+    "high": 146.97,
+    "low": 142.54,
+    "open": 144.81
+  },
+  {
+    "date": "29-07-2021",
+    "close": 145.64,
+    "high": 146.55,
+    "low": 144.58,
+    "open": 144.685
+  },
+  {
+    "date": "30-07-2021",
+    "close": 145.86,
+    "high": 146.33,
+    "low": 144.11,
+    "open": 144.38
+  },
+  {
+    "date": "02-08-2021",
+    "close": 145.52,
+    "high": 146.95,
+    "low": 145.25,
+    "open": 146.36
+  },
+  {
+    "date": "03-08-2021",
+    "close": 147.36,
+    "high": 148.045,
+    "low": 145.18,
+    "open": 145.81
+  },
+  {
+    "date": "04-08-2021",
+    "close": 146.95,
+    "high": 147.79,
+    "low": 146.28,
+    "open": 147.27
+  },
+  {
+    "date": "05-08-2021",
+    "close": 147.06,
+    "high": 147.84,
+    "low": 146.17,
+    "open": 146.98
+  },
+  {
+    "date": "06-08-2021",
+    "close": 146.14,
+    "high": 147.11,
+    "low": 145.63,
+    "open": 146.35
+  },
+  {
+    "date": "09-08-2021",
+    "close": 146.09,
+    "high": 146.7,
+    "low": 145.52,
+    "open": 146.2
+  },
+  {
+    "date": "10-08-2021",
+    "close": 145.6,
+    "high": 147.71,
+    "low": 145.3,
+    "open": 146.44
+  },
+  {
+    "date": "11-08-2021",
+    "close": 145.86,
+    "high": 146.72,
+    "low": 145.53,
+    "open": 146.05
+  },
+  {
+    "date": "12-08-2021",
+    "close": 148.89,
+    "high": 149.05,
+    "low": 145.84,
+    "open": 146.19
+  },
+  {
+    "date": "13-08-2021",
+    "close": 149.1,
+    "high": 149.4444,
+    "low": 148.27,
+    "open": 148.97
+  },
+  {
+    "date": "16-08-2021",
+    "close": 151.12,
+    "high": 151.19,
+    "low": 146.47,
+    "open": 148.535
+  },
+  {
+    "date": "17-08-2021",
+    "close": 150.19,
+    "high": 151.68,
+    "low": 149.09,
+    "open": 150.23
+  },
+  {
+    "date": "18-08-2021",
+    "close": 146.36,
+    "high": 150.72,
+    "low": 146.15,
+    "open": 149.8
+  },
+  {
+    "date": "19-08-2021",
+    "close": 146.7,
+    "high": 148,
+    "low": 144.5,
+    "open": 145.03
+  },
+  {
+    "date": "20-08-2021",
+    "close": 148.19,
+    "high": 148.5,
+    "low": 146.78,
+    "open": 147.44
+  },
+  {
+    "date": "23-08-2021",
+    "close": 149.71,
+    "high": 150.19,
+    "low": 147.89,
+    "open": 148.31
+  },
+  {
+    "date": "24-08-2021",
+    "close": 149.62,
+    "high": 150.86,
+    "low": 149.15,
+    "open": 149.45
+  }
+]
+    
+    chart.events.on("inited", function() {
+      dateAxis.zoomToDates(new Date(2011, 7, 28), new Date(2011, 8, 28))
+    });
+    
+    }); // end am4core.ready()
+    </script>
+</body>
+
+</html>
